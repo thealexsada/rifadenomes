@@ -5,9 +5,11 @@ app = Flask(__name__)
 # Simulando armazenamento em memória (use um banco real em produção)
 dados = []
 
+
 @app.route('/')
 def index():
     return "Hello, World!"
+
 
 @app.route('/salvar', methods=['POST'])
 def salvar():
@@ -23,6 +25,7 @@ def salvar():
     # Salva os dados
     dados.append({'nome': nome, 'numeros': numeros})
     return "Dados salvos com sucesso!", 200
+
 
 if __name__ == '__main__':
     app.run(debug=True)
