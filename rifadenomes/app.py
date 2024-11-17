@@ -5,6 +5,10 @@ app = Flask(__name__)
 # Simulando armazenamento em memória (use um banco real em produção)
 dados = []
 
+@app.route('/')
+def index():
+    return "Hello, World!"
+
 @app.route('/salvar', methods=['POST'])
 def salvar():
     nome = request.form['nome']
