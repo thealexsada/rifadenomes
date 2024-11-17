@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escolha de Números</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .numero {
+      display: inline-block;
+      margin: 5px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      user-select: none;
+    }
+    .selecionado {
+      background-color: #4caf50;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Escolha seus Números</h1>
+  <form id="formulario" action="/salvar" method="POST">
+    <div id="numeros"></div>
+    <input type="text" name="nome" placeholder="Seu nome" required>
+    <input type="hidden" id="escolhas" name="escolhas" value="">
+    <button type="submit">Enviar</button>
+  </form>
+
+  <script>
+    const numerosDiv = document.getElementById("numeros");
+    const escolhasInput = document.getElementById("escolhas");
+    const numerosEscolhidos = new Set();
+
+    // Gera números de 1 a 100
+    for (let i = 1; i <= 100; i++) {
+      const numero = document.createElement("div");
+      numero.classList.add("numero");
+      numero.textContent = i;
+      numero.addEventListener("click", () => {
+        if (numerosEscolhidos.has(i)) {
+          numerosEscolhidos.delete(i);
+          numero.classList.remove("selecionado");
+        } else {
+          numerosEscolhidos.add(i);
+          numero.classList.add("selecionado");
+        }
+        escolhasInput.value = Array.from(numerosEscolhidos).join(",");
+      });
+      numerosDiv.appendChild(numero);
+    }
+  </script>
+</body>
+</html>
