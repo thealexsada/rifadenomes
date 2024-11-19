@@ -11,29 +11,67 @@
 <body>
     <h1>Escolha Nomes</h1>
     <form id="formulario" action="/salvar" method="POST">
-        <div id="nomes"></div> <!-- Updated container for names -->
+        <div id="nomes"></div>
         <input type="text" name="nome" placeholder="Seu nome" required>
         <input type="hidden" id="escolhas" name="escolhas" value="">
         <button type="submit">Enviar</button>
     </form>
+
+    <h2>Seleções:</h2>
+    <table id="dicionario">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Selecionado Por</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dynamic rows will be inserted here -->
+        </tbody>
+    </table>
 
     <script>
         const nomesDiv = document.getElementById("nomes");
         const escolhasInput = document.getElementById("escolhas");
         const nomesEscolhidos = new Set();
 
+        // Function to refresh the selection dictionary table
+        function refreshDicionario() {
+            fetch('/dicionario')
+                .then(response => response.json())
+                .then(data => {
+                    const dicionarioTable = document.querySelector("#dicionario tbody");
+                    dicionarioTable.innerHTML = ""; // Clear existing rows
+
+                    for (const [nome, selecionadoPor] of Object.entries(data)) {
+                        const row = document.createElement("tr");
+
+                        const nomeCell = document.createElement("td");
+                        nomeCell.textContent = nome;
+                        row.appendChild(nomeCell);
+
+                        const selecionadoPorCell = document.createElement("td");
+                        selecionadoPorCell.textContent = selecionadoPor;
+                        row.appendChild(selecionadoPorCell);
+
+                        dicionarioTable.appendChild(row);
+                    }
+                })
+                .catch(error => console.error("Erro ao carregar o dicionário:", error));
+        }
+
         // Fetch the list of names and already chosen names
         fetch('/nomes')
             .then(response => response.json())
             .then(data => {
-                const allNames = data.all_names; // **Updated to handle "1. Alex" format**
+                const allNames = data.all_names;
                 const takenNames = new Set(data.taken_names);
 
                 // Generate name boxes
                 allNames.forEach(fullName => {
                     const nameBox = document.createElement("div");
                     nameBox.classList.add("nome");
-                    nameBox.textContent = fullName; // **Display the formatted name**
+                    nameBox.textContent = fullName;
 
                     // Disable already chosen names
                     if (takenNames.has(fullName)) {
@@ -54,6 +92,33 @@
                 });
             })
             .catch(error => console.error('Erro ao buscar nomes:', error));
+
+        // Refresh dictionary on page load
+        refreshDicionario();
+
+        // Submit form and refresh dictionary
+        const form = document.getElementById("formulario");
+        form.addEventListener("submit", event => {
+            event.preventDefault(); // Prevent page reload
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: "POST",
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        form.reset();
+                        escolhasInput.value = "";
+                        nomesEscolhidos.clear();
+                        refreshDicionario();
+                        alert("Dados salvos com sucesso!");
+                    } else {
+                        response.text().then(text => alert(text));
+                    }
+                })
+                .catch(error => console.error("Erro ao enviar formulário:", error));
+        });
     </script>
 </body>
 

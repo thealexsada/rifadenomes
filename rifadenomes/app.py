@@ -21,11 +21,19 @@ def index():
 def nomes():
     # Extract all names already chosen
     nomes_usados = {nome for d in dados for nome in d['nomes']}
-    # Return all names with indices and taken names
     return jsonify({
-        "all_names": [f"{i + 1}. {name}" for i, name in enumerate(all_names)],  # **Format updated here**
+        "all_names": [f"{i + 1}. {name}" for i, name in enumerate(all_names)],
         "taken_names": list(nomes_usados)
     })
+
+@app.route('/dicionario', methods=['GET'])
+def dicionario():
+    # Build the dictionary of selected names and the person who selected them
+    selection_dict = {}
+    for entry in dados:
+        for nome in entry['nomes']:
+            selection_dict[nome] = entry['nome']
+    return jsonify(selection_dict)
 
 @app.route('/salvar', methods=['POST'])
 def salvar():
