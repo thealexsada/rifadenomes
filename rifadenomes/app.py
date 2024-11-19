@@ -13,7 +13,7 @@ all_names = [
 
 # In-memory data storage (use a real database in production)
 dados = []
-selection_dict = OrderedDict()  # **Use OrderedDict to maintain insertion order**
+selection_dict = OrderedDict()  # Use OrderedDict to maintain insertion order
 
 @app.route('/')
 def index():
@@ -24,14 +24,18 @@ def nomes():
     # Extract all names already chosen
     nomes_usados = set(selection_dict.keys())
     return jsonify({
-        "all_names": [f"{i + 1}. {name}" for i, name in enumerate(all_names)],  # Add indices to names
+        "all_names": [f"{i + 1}. {name}" for i, name in enumerate(all_names)],
         "taken_names": list(nomes_usados)
     })
 
 @app.route('/dicionario', methods=['GET'])
 def dicionario():
-    # Return the ordered dictionary as a JSON object
-    return jsonify(dict(selection_dict))
+    # Sort the dictionary keys numerically before returning
+    sorted_dict = OrderedDict(sorted(
+        selection_dict.items(),
+        key=lambda item: int(item[0].split('.')[0].strip())  # Properly extract numeric prefix
+    ))
+    return jsonify(dict(sorted_dict))
 
 @app.route('/salvar', methods=['POST'])
 def salvar():
