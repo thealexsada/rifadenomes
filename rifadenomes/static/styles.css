@@ -5,20 +5,23 @@ body {
 
 .nome {
     display: inline-block;
-    margin: 5px;
     padding: 10px;
+    margin: 5px;
     border: 1px solid #ccc;
     cursor: pointer;
     user-select: none;
+    text-align: center;
+    width: 100px;
+    background-color: #f9f9f9;
 }
 
-.selecionado {
-    background-color: #4caf50;
-    color: white;
-}
-
-.desabilitado {
+.nome.desabilitado {
     background-color: #ccc;
     color: #999;
     cursor: not-allowed;
+}
+
+.nome.selecionado {
+    background-color: #4caf50;
+    color: white;
 }

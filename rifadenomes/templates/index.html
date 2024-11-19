@@ -5,12 +5,38 @@
     <form action="/register" method="POST">
         <div id="nomes">
             {% for name in names %}
-                <div class="nome {% if name in taken_names %}desabilitado{% endif %}">
+                <div
+                    class="nome {% if name in taken_names %}desabilitado{% endif %}"
+                    data-name="{{ name }}"
+                >
                     {{ name }}
                 </div>
             {% endfor %}
         </div>
-        <input autocomplete=off autofocus type="text" name="registrant" placeholder="Seu nome" required>
+        <input type="hidden" id="selectedName" name="name" value="">
+        <input autocomplete="off" autofocus type="text" name="registrant" placeholder="Seu nome" required>
         <button type="submit">Registrar</button>
     </form>
+
+    <script>
+        // Select DOM elements
+        const tiles = document.querySelectorAll('.nome');
+        const selectedNameInput = document.getElementById('selectedName');
+
+        tiles.forEach(tile => {
+            // Ensure only enabled tiles are clickable
+            if (!tile.classList.contains('desabilitado')) {
+                tile.addEventListener('click', () => {
+                    // Deselect any previously selected tile
+                    tiles.forEach(t => t.classList.remove('selecionado'));
+
+                    // Select the clicked tile
+                    tile.classList.add('selecionado');
+
+                    // Update the hidden input with the selected name
+                    selectedNameInput.value = tile.getAttribute('data-name');
+                });
+            }
+        });
+    </script>
 {% endblock %}
