@@ -2,7 +2,6 @@
 
 from cs50 import SQL
 from flask import Flask, request, jsonify, render_template
-from collections import OrderedDict
 
 app = Flask(__name__)
 
@@ -18,7 +17,6 @@ NAMES = [
 
 # In-memory data storage (use a real database in production)
 dados = []
-selection_dict = OrderedDict()  # Use OrderedDict to maintain insertion order
 
 @app.route('/')
 def index():
