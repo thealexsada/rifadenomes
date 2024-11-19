@@ -1,11 +1,11 @@
 # Implements a registration form, storing registrants in a SQLite database, with support for deregistration
-
+import os
 from cs50 import SQL
 from flask import Flask, redirect, request, jsonify, render_template
 
 app = Flask(__name__)
 
-db = SQL("sqlite:///rifadenomes.db")
+db = SQL("sqlite:///tmp/rifadenomes.db") # Store the database in /tmp
 
 # List of names to display with indices
 NAMES = [
@@ -75,9 +75,12 @@ def register():
     return redirect("/registrants")
 
 
-
 @app.route("/registrants")
 def registrants():
     registrants = db.execute("SELECT * FROM registrants ORDER BY name ASC")
     return render_template("registrants.html", registrants=registrants)
 
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
