@@ -1,7 +1,7 @@
 # Implements a registration form, storing registrants in a SQLite database, with support for deregistration
 
 from cs50 import SQL
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, redirect, request, jsonify, render_template
 
 app = Flask(__name__)
 
