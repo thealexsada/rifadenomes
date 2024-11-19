@@ -33,9 +33,20 @@ def dicionario():
     # Sort the dictionary keys numerically before returning
     sorted_dict = OrderedDict(sorted(
         selection_dict.items(),
-        key=lambda item: int(item[0].split('.')[0].strip())  # Properly extract numeric prefix
+        key=lambda item: extract_numeric_prefix(item[0])  # Extract numeric prefix reliably
     ))
     return jsonify(dict(sorted_dict))
+
+def extract_numeric_prefix(name_with_index):
+    """
+    Extracts the numeric prefix from a string like "1. Alex" or "12. Katherine".
+    """
+    try:
+        # Split by the first '.' and strip whitespace, then convert to int
+        return int(name_with_index.split('.')[0].strip())
+    except (ValueError, IndexError):
+        # Fallback for unexpected formats: place at the end
+        return float('inf')
 
 @app.route('/salvar', methods=['POST'])
 def salvar():
