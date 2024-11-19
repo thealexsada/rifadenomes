@@ -21,11 +21,15 @@ def index():
     return render_template('index.html')  # HTML file served from the templates folder
 
 
-@app.route('/numeros', methods=['GET'])
-def numeros():
-    # Extract all numbers already chosen
-    numeros_usados = {num for d in dados for num in d['numeros']}
-    return jsonify(list(numeros_usados))  # Return the chosen numbers as JSON
+@app.route('/nomes', methods=['GET'])
+def nomes():
+    # Extract all names already chosen
+    nomes_usados = {nome for d in dados for nome in d['nomes']}
+    # Return all names with indices and taken names
+    return jsonify({
+        "all_names": [f"{i + 1}. {name}" for i, name in enumerate(all_names)],  # **Format updated here**
+        "taken_names": list(nomes_usados)
+    })
 
 
 @app.route('/salvar', methods=['POST'])
