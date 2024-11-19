@@ -36,7 +36,7 @@ def register():
     # Validate submission
     registrant = request.form.get("registrant")
     name = request.form.get("name")
-    if not name or sport not in SPORTS:
+    if not registrant or name not in NAMES:
         return render_template("failure.html")
 
     # Remember registrant
