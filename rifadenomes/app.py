@@ -38,14 +38,15 @@ def deregister():
 
 @app.route("/register", methods=["POST"])
 def register():
-    # Validate submission
+    # Get form data
     registrant = request.form.get("registrant")
-    names = request.form.get("names")  # Comma-separated list of names
+    names = request.form.get("names")
 
+    # Validate submission
     if not registrant or not names:
-        return render_template("failure.html", message="Nome ou registrante inválido!")
+        return render_template("failure.html", message="Você precisa selecionar ao menos um nome e fornecer o seu nome.")
 
-    # Split the names into a list
+    # Split names into a list
     selected_names = names.split(',')
 
     # Validate names
@@ -53,21 +54,21 @@ def register():
     if invalid_names:
         return render_template("failure.html", message=f"Nomes inválidos: {', '.join(invalid_names)}")
 
-    # Check if any name is already registered
-    existing = db.execute(
-        "SELECT name FROM registrants WHERE name IN (?)",
-        ",".join(selected_names)  # Join the names for SQL query
-    )
+    # Check for already registered names
+    placeholders = ', '.join('?' for _ in selected_names)
+    query = f"SELECT name FROM registrants WHERE name IN ({placeholders})"
+    existing = db.execute(query, *selected_names)
+
     if existing:
         taken = [row['name'] for row in existing]
         return render_template("failure.html", message=f"Nomes já registrados: {', '.join(taken)}")
 
-    # Register all valid names
+    # Register valid names
     for name in selected_names:
         db.execute("INSERT INTO registrants (registrant, name) VALUES(?, ?)", registrant, name)
 
-    # Redirect to the list of registrants
     return redirect("/registrants")
+
 
 
 @app.route("/registrants")
