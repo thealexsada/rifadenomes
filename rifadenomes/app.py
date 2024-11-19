@@ -40,17 +40,31 @@ def deregister():
 def register():
     # Validate submission
     registrant = request.form.get("registrant")
-    name = request.form.get("name")
-    if not registrant or name not in NAMES:
-        return render_template("failure.html", message="Nome inválido ou não encontrado.")
+    names = request.form.get("names")  # Comma-separated list of names
 
-    # Ensure the name hasn't already been registered
-    existing = db.execute("SELECT * FROM registrants WHERE name = ?", name)
+    if not registrant or not names:
+        return render_template("failure.html", message="Nome ou registrante inválido!")
+
+    # Split the names into a list
+    selected_names = names.split(',')
+
+    # Validate names
+    invalid_names = [name for name in selected_names if name not in NAMES]
+    if invalid_names:
+        return render_template("failure.html", message=f"Nomes inválidos: {', '.join(invalid_names)}")
+
+    # Check if any name is already registered
+    existing = db.execute(
+        "SELECT name FROM registrants WHERE name IN (?)",
+        ",".join(selected_names)  # Join the names for SQL query
+    )
     if existing:
-        return render_template("failure.html", message="Nome já registrado!")
+        taken = [row['name'] for row in existing]
+        return render_template("failure.html", message=f"Nomes já registrados: {', '.join(taken)}")
 
-    # Add registrant to the database
-    db.execute("INSERT INTO registrants (registrant, name) VALUES(?, ?)", registrant, name)
+    # Register all valid names
+    for name in selected_names:
+        db.execute("INSERT INTO registrants (registrant, name) VALUES(?, ?)", registrant, name)
 
     # Redirect to the list of registrants
     return redirect("/registrants")
