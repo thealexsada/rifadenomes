@@ -28,12 +28,8 @@ def nomes():
 
 @app.route('/dicionario', methods=['GET'])
 def dicionario():
-    # Build the dictionary of selected names and the person who selected them
-    selection_dict = {}
-    for entry in dados:
-        for nome in entry['nomes']:
-            selection_dict[nome] = entry['nome']
-    return jsonify(selection_dict)
+    # Return the ordered dictionary as a JSON object
+    return jsonify(dict(selection_dict))  # Convert OrderedDict to regular dict for JSON serialization
 
 @app.route('/salvar', methods=['POST'])
 def salvar():
