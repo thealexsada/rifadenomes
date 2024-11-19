@@ -14,31 +14,6 @@
         const escolhasInput = document.getElementById("escolhas");
         const nomesEscolhidos = new Set();
 
-        // Function to refresh the selection dictionary table
-        function refreshDicionario() {
-            fetch('/dicionario')
-                .then(response => response.json())
-                .then(data => {
-                    const dicionarioTable = document.querySelector("#dicionario tbody");
-                    dicionarioTable.innerHTML = ""; // Clear existing rows
-
-                    for (const [nome, selecionadoPor] of Object.entries(data)) {
-                        const row = document.createElement("tr");
-
-                        const nomeCell = document.createElement("td");
-                        nomeCell.textContent = nome;
-                        row.appendChild(nomeCell);
-
-                        const selecionadoPorCell = document.createElement("td");
-                        selecionadoPorCell.textContent = selecionadoPor;
-                        row.appendChild(selecionadoPorCell);
-
-                        dicionarioTable.appendChild(row);
-                    }
-                })
-                .catch(error => console.error("Erro ao carregar o dicionário:", error));
-        }
-
         // Fetch the list of names and already chosen names
         fetch('/nomes')
             .then(response => response.json())
