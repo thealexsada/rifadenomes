@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+{% extends "layout.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escolha Nomes</title>
-    <link rel="stylesheet" href="/static/styles.css">
-</head>
-
-<body>
+{% block body %}
     <h1>Escolha Nomes</h1>
     <form id="formulario" action="/salvar" method="POST">
         <div id="nomes"></div>
@@ -120,6 +112,21 @@
                 .catch(error => console.error("Erro ao enviar formulário:", error));
         });
     </script>
+{% endblock %}
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escolha Nomes</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+
 </body>
 
 </html>
