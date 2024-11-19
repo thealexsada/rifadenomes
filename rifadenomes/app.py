@@ -24,7 +24,7 @@ def nomes():
     # Extract all names already chosen
     nomes_usados = set(selection_dict.keys())
     return jsonify({
-        "all_names": [f"{i + 1}. {name}" for i, name in enumerate(all_names)],
+        "all_names": [f"{str(i + 1).zfill(2)}. {name}" for i, name in enumerate(all_names)],  # Zero-padded indices
         "taken_names": list(nomes_usados)
     })
 
@@ -33,20 +33,9 @@ def dicionario():
     # Sort the dictionary keys numerically before returning
     sorted_dict = OrderedDict(sorted(
         selection_dict.items(),
-        key=lambda item: extract_numeric_prefix(item[0])  # Extract numeric prefix reliably
+        key=lambda item: int(item[0].split('.')[0].strip())  # Extract numeric prefix
     ))
     return jsonify(dict(sorted_dict))
-
-def extract_numeric_prefix(name_with_index):
-    """
-    Extracts the numeric prefix from a string like "1. Alex" or "12. Katherine".
-    """
-    try:
-        # Split by the first '.' and strip whitespace, then convert to int
-        return int(name_with_index.split('.')[0].strip())
-    except (ValueError, IndexError):
-        # Fallback for unexpected formats: place at the end
-        return float('inf')
 
 @app.route('/salvar', methods=['POST'])
 def salvar():
@@ -62,7 +51,7 @@ def salvar():
     if any(nome in nomes_usados for nome in nomes):
         return "Erro: Alguns nomes já foram escolhidos.", 400
 
-    # Ensure names are formatted (e.g., "1. Alex") and added in order
+    # Ensure names are formatted (e.g., "01. Alex") and added in order
     for nome in nomes:
         if nome not in nomes_usados:
             selection_dict[nome] = nome_usuario  # Add in insertion order
