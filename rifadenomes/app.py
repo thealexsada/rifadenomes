@@ -4,7 +4,7 @@ from collections import OrderedDict
 app = Flask(__name__)
 
 # List of names to display with indices
-all_names = [
+NAMES = [
     "Alex", "Alice", "Bob", "Charlie", "Diana", "Edward", "Fiona", "George",
     "Hannah", "Ivy", "Jack", "Katherine", "Leo", "Mona", "Nathan",
     "Olivia", "Paul", "Quincy", "Rachel", "Sophia", "Thomas", "Ursula",
@@ -24,7 +24,7 @@ def nomes():
     # Extract all names already chosen
     nomes_usados = set(selection_dict.keys())
     return jsonify({
-        "all_names": [f"{str(i + 1).zfill(2)}. {name}" for i, name in enumerate(all_names)],  # Zero-padded indices
+        "NAMES": [f"{str(i + 1).zfill(2)}. {name}" for i, name in enumerate(NAMES)],  # Zero-padded indices
         "taken_names": list(nomes_usados)
     })
 
