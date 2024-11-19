@@ -18,7 +18,13 @@ NAMES = [
 
 @app.route('/')
 def index():
-    return render_template("index.html", names=NAMES)
+    # Fetch registered names
+    registrants = db.execute("SELECT name FROM registrants")
+    taken_names = {row["name"] for row in registrants}
+
+    # Pass names and registration status to the frontend
+    return render_template("index.html", names=NAMES, taken_names=taken_names)
+
 
 @app.route("/deregister", methods=["POST"])
 def deregister():
