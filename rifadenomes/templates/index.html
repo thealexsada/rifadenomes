@@ -2,76 +2,21 @@
 
 {% block body %}
     <h1>Escolha Nomes</h1>
-    <form id="formulario" action="/salvar" method="POST">
-        <div id="nomes"></div>
-        <input autocomplte=off autofocus type="text" name="nome" placeholder="Seu nome" required>
-        <input type="hidden" id="escolhas" name="escolhas" value="">
+    <form action="/register" method="POST">
+        <div id="nomes">
+            {% for name in names %}
+                <div class="nome {% if name in taken_names %}desabilitado{% endif %}">
+                    <input
+                        {% if name in taken_names %}disabled{% endif %}
+                        type="radio"
+                        name="name"
+                        value="{{ name }}"
+                    >
+                    {{ name }}
+                </div>
+            {% endfor %}
+        </div>
+        <input type="text" name="registrant" placeholder="Seu nome" required>
         <button type="submit">Registrar</button>
     </form>
-
-    <script>
-        const nomesDiv = document.getElementById("nomes");
-        const escolhasInput = document.getElementById("escolhas");
-        const nomesEscolhidos = new Set();
-
-        // Fetch the list of names and already chosen names
-        fetch('/nomes')
-            .then(response => response.json())
-            .then(data => {
-                const allNames = data.all_names;
-                const takenNames = new Set(data.taken_names);
-
-                // Generate name boxes
-                allNames.forEach(fullName => {
-                    const nameBox = document.createElement("div");
-                    nameBox.classList.add("nome");
-                    nameBox.textContent = fullName;
-
-                    // Disable already chosen names
-                    if (takenNames.has(fullName)) {
-                        nameBox.classList.add("desabilitado");
-                    } else {
-                        nameBox.addEventListener("click", () => {
-                            if (nomesEscolhidos.has(fullName)) {
-                                nomesEscolhidos.delete(fullName);
-                                nameBox.classList.remove("selecionado");
-                            } else {
-                                nomesEscolhidos.add(fullName);
-                                nameBox.classList.add("selecionado");
-                            }
-                            escolhasInput.value = Array.from(nomesEscolhidos).join(",");
-                        });
-                    }
-                    nomesDiv.appendChild(nameBox);
-                });
-            })
-            .catch(error => console.error('Erro ao buscar nomes:', error));
-
-        // Refresh dictionary on page load
-        refreshDicionario();
-
-        // Submit form and refresh dictionary
-        const form = document.getElementById("formulario");
-        form.addEventListener("submit", event => {
-            event.preventDefault(); // Prevent page reload
-            const formData = new FormData(form);
-
-            fetch(form.action, {
-                method: "POST",
-                body: formData
-            })
-                .then(response => {
-                    if (response.ok) {
-                        form.reset();
-                        escolhasInput.value = "";
-                        nomesEscolhidos.clear();
-                        refreshDicionario();
-                        alert("Dados salvos com sucesso!");
-                    } else {
-                        response.text().then(text => alert(text));
-                    }
-                })
-                .catch(error => console.error("Erro ao enviar formulário:", error));
-        });
-    </script>
 {% endblock %}
