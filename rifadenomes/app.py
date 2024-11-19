@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
 
-
 # List of names to display with indices
 all_names = [
     "Alex", "Alice", "Bob", "Charlie", "Diana", "Edward", "Fiona", "George",
@@ -11,15 +10,12 @@ all_names = [
     "Victor", "Wendy", "Xander", "Yvonne", "Zane"
 ]
 
-
 # In-memory data storage (use a real database in production)
 dados = []
-
 
 @app.route('/')
 def index():
     return render_template('index.html')  # HTML file served from the templates folder
-
 
 @app.route('/nomes', methods=['GET'])
 def nomes():
@@ -30,7 +26,6 @@ def nomes():
         "all_names": [f"{i + 1}. {name}" for i, name in enumerate(all_names)],  # **Format updated here**
         "taken_names": list(nomes_usados)
     })
-
 
 @app.route('/salvar', methods=['POST'])
 def salvar():
