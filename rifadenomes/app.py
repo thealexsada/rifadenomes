@@ -34,21 +34,20 @@ def nomes():
 
 @app.route('/salvar', methods=['POST'])
 def salvar():
-    nome = request.form['nome']
+    nome_usuario = request.form['nome']
     escolhas = request.form['escolhas']
-    if not escolhas:  # Handle cases where no numbers are chosen
-        return "Erro: Nenhum número escolhido.", 400
-    numeros = list(map(int, escolhas.split(',')))
+    if not escolhas:  # Handle cases where no names are chosen
+        return "Erro: Nenhum nome escolhido.", 400
+    nomes = escolhas.split(',')
 
-    # Check if any number is already chosen
-    numeros_usados = {num for d in dados for num in d['numeros']}
-    if any(num in numeros_usados for num in numeros):
-        return "Erro: Alguns números já foram escolhidos.", 400
+    # Check if any name is already chosen
+    nomes_usados = {nome for d in dados for nome in d['nomes']}
+    if any(nome in nomes_usados for nome in nomes):
+        return "Erro: Alguns nomes já foram escolhidos.", 400
 
     # Save the data
-    dados.append({'nome': nome, 'numeros': numeros})
+    dados.append({'nome': nome_usuario, 'nomes': nomes})
     return "Dados salvos com sucesso!", 200
 
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
