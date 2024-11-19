@@ -9,31 +9,6 @@
         <button type="submit">Registrar</button>
     </form>
 
-    <h2>Seleções:</h2>
-    <table id="dicionario">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Selecionado Por</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for registrant in registrants %}
-                <tr>
-                    <td>{{ registrant.name }}</td>
-                    <td>{{ registrant.registrant }}</td>
-                    <td>
-                        <form action="/deregister" method="post">
-                            <input name="id" type="hidden" value="{{ registrant.id }}">
-                            <button type="submit">Borrar</button>
-                        </form>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
     <script>
         const nomesDiv = document.getElementById("nomes");
         const escolhasInput = document.getElementById("escolhas");

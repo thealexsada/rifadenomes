@@ -45,6 +45,11 @@ def register():
     # Confirm registration
     return redirect("/registrants")
 
+@app.route("/registrants")
+def registrants():
+    registrants = db.execute("SELECT * FROM registrants")
+    return render_template("registrants.html", registrants=registrants)
+
 
 @app.route('/nomes', methods=['GET'])
 def nomes():
