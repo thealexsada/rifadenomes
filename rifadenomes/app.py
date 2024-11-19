@@ -42,18 +42,19 @@ def register():
     registrant = request.form.get("registrant")
     name = request.form.get("name")
     if not registrant or name not in NAMES:
-        return render_template("failure.html")
+        return render_template("failure.html", message="Nome inválido ou não encontrado.")
 
     # Ensure the name hasn't already been registered
     existing = db.execute("SELECT * FROM registrants WHERE name = ?", name)
     if existing:
-        return render_template("failure.html", message="Name already taken!")
+        return render_template("failure.html", message="Nome já registrado!")
 
     # Add registrant to the database
     db.execute("INSERT INTO registrants (registrant, name) VALUES(?, ?)", registrant, name)
 
     # Redirect to the list of registrants
     return redirect("/registrants")
+
 
 @app.route("/registrants")
 def registrants():
