@@ -38,34 +38,24 @@ def deregister():
 
 @app.route("/register", methods=["POST"])
 def register():
-
     # Validate submission
     registrant = request.form.get("registrant")
     name = request.form.get("name")
     if not registrant or name not in NAMES:
         return render_template("failure.html")
 
-    # Remember registrant
+    # Ensure the name hasn't already been registered
+    existing = db.execute("SELECT * FROM registrants WHERE name = ?", name)
+    if existing:
+        return render_template("failure.html", message="Name already taken!")
+
+    # Add registrant to the database
     db.execute("INSERT INTO registrants (registrant, name) VALUES(?, ?)", registrant, name)
 
-    # Confirm registration
+    # Redirect to the list of registrants
     return redirect("/registrants")
 
 @app.route("/registrants")
 def registrants():
-    registrants = db.execute("SELECT * FROM registrants")
+    registrants = db.execute("SELECT * FROM registrants ORDER BY name ASC")
     return render_template("registrants.html", registrants=registrants)
-
-
-@app.route('/nomes', methods=['GET'])
-def nomes():
-    # Extract all names already chosen
-    nomes_usados = set(selection_dict.keys())
-    return jsonify({
-        "NAMES": [f"{str(i + 1).zfill(2)}. {name}" for i, name in enumerate(NAMES)],  # Zero-padded indices
-        "taken_names": list(nomes_usados)
-    })
-
-
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
