@@ -60,26 +60,6 @@ def nomes():
         "taken_names": list(nomes_usados)
     })
 
-@app.route('/salvar', methods=['POST'])
-def salvar():
-    nome_usuario = request.form['nome']
-    escolhas = request.form['escolhas']
-    if not escolhas:  # Handle cases where no names are chosen
-        return "Erro: Nenhum nome escolhido.", 400
-
-    nomes = escolhas.split(',')
-
-    # Validate and preserve format
-    nomes_usados = set(selection_dict.keys())
-    if any(nome in nomes_usados for nome in nomes):
-        return "Erro: Alguns nomes já foram escolhidos.", 400
-
-    # Ensure names are formatted (e.g., "01. Alex") and added in order
-    for nome in nomes:
-        if nome not in nomes_usados:
-            selection_dict[nome] = nome_usuario  # Add in insertion order
-
-    return "Dados salvos com sucesso!", 200
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
