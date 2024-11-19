@@ -29,6 +29,23 @@ def deregister():
         db.execute("DELETE FROM registrants WHERE id = ?", id)
     return redirect("/registrants")
 
+
+@app.route("/register", methods=["POST"])
+def register():
+
+    # Validate submission
+    registrant = request.form.get("registrant")
+    name = request.form.get("name")
+    if not name or sport not in SPORTS:
+        return render_template("failure.html")
+
+    # Remember registrant
+    db.execute("INSERT INTO registrants (name, sport) VALUES(?, ?)", name, sport)
+
+    # Confirm registration
+    return redirect("/registrants")
+
+
 @app.route('/nomes', methods=['GET'])
 def nomes():
     # Extract all names already chosen
