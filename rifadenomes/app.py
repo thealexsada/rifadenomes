@@ -2,6 +2,16 @@ from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
 
+
+# List of names to display with indices
+all_names = [
+    "Alex", "Alice", "Bob", "Charlie", "Diana", "Edward", "Fiona", "George",
+    "Hannah", "Ivy", "Jack", "Katherine", "Leo", "Mona", "Nathan",
+    "Olivia", "Paul", "Quincy", "Rachel", "Sophia", "Thomas", "Ursula",
+    "Victor", "Wendy", "Xander", "Yvonne", "Zane"
+]
+
+
 # In-memory data storage (use a real database in production)
 dados = []
 
