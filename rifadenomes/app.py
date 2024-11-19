@@ -15,12 +15,19 @@ NAMES = [
     "Victor", "Wendy", "Xander", "Yvonne", "Zane"
 ]
 
-# In-memory data storage (use a real database in production)
-dados = []
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template("index.html", names=NAMES)
+
+@app.route("/deregister", methods=["POST"])
+def deregister():
+
+    # Forget registrant
+    id = request.form.get("id")
+    if id:
+        db.execute("DELETE FROM registrants WHERE id = ?", id)
+    return redirect("/registrants")
 
 @app.route('/nomes', methods=['GET'])
 def nomes():
