@@ -9,10 +9,15 @@ db = SQL("sqlite:///rifadenomes.db")
 
 # List of names to display with indices
 NAMES = [
-    "Alex", "Alice", "Bob", "Charlie", "Diana", "Edward", "Fiona", "George",
-    "Hannah", "Ivy", "Jack", "Katherine", "Leo", "Mona", "Nathan",
-    "Olivia", "Paul", "Quincy", "Rachel", "Sophia", "Thomas", "Ursula",
-    "Victor", "Wendy", "Xander", "Yvonne", "Zane"
+    "Newton", "Isaque", "Euler", "Thales", "Leonardo", "Theo", "Heitor", "Thomas", "Edson", "Nicolas", "Willian",
+    "Diogo", "Otto", "Cesar", "Joseph", "Hermes", "Juan", "Silas", "Henry", "Felipe", "Erick", "Richard", "Alberto",
+    "Antony", "Robert", "Estevam", "Jorge", "Mário", "Álvaro", "Augusto", "Kelvin", "Levi", "Murilo", "Sandro",
+    "Ian", "Klaus", "Dante", "Otávio", "Hector", "Oliver", "Stephen", "Ivan", "Carlos", "Claudio", "Dylan", "Caleb",
+    "Thiago", "Lorenzo", "Fabricio", "Matheus", "Beatriz", "Patrícia", "Berenice", "Olívia", "Érica", "Heloisa",
+    "Luna", "Edna", "Nádia", "Cecília", "Vitória", "Camila", "Aurora", "Maia", "Sandra", "Miriam", "Raquel", "Laís",
+    "Samantha", "Maria", "Isis", "Laura", "Sophia", "Verônica", "Carla", "Lúcia", "Serena", "Mônica", "Sabrina",
+    "Lígia", "Melissa", "Valentina", "Alba", "Renata", "Clara", "Tereza", "Flávia", "Helena", "Lavínia", "Valéria",
+    "Luana", "Larissa", "Paula", "Thaís", "Letícia", "Yasmim", "Débora", "Marília", "Diana"
 ]
 
 
