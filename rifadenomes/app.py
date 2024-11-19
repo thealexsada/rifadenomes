@@ -60,15 +60,6 @@ def nomes():
         "taken_names": list(nomes_usados)
     })
 
-@app.route('/dicionario', methods=['GET'])
-def dicionario():
-    # Sort the dictionary keys numerically before returning
-    sorted_dict = OrderedDict(sorted(
-        selection_dict.items(),
-        key=lambda item: int(item[0].split('.')[0].strip())  # Extract numeric prefix
-    ))
-    return jsonify(dict(sorted_dict))
-
 @app.route('/salvar', methods=['POST'])
 def salvar():
     nome_usuario = request.form['nome']
