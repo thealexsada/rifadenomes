@@ -60,3 +60,4 @@ def register():
 def registrants():
     registrants = db.execute("SELECT * FROM registrants ORDER BY name ASC")
     return render_template("registrants.html", registrants=registrants)
+

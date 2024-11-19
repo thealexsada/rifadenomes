@@ -8,7 +8,6 @@
                 <div class="nome {% if name in taken_names %}desabilitado{% endif %}">
                     <input
                         {% if name in taken_names %}disabled{% endif %}
-                        type="radio"
                         name="name"
                         value="{{ name }}"
                     >
