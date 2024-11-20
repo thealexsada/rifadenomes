@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Path to the SQLite database
 db_path = "/app/tmp/rifadenomes.db"
-db = None  # Initialize the database connection variable
+db = None  # Global database connection variable
 
 
 def initialize_db():
@@ -29,10 +29,12 @@ def initialize_db():
         db = SQL(f"sqlite:///{db_path}")
 
 
-@app.before_first_request
+@app.before_request
 def setup():
-    """Run before the first request to ensure database is initialized."""
-    initialize_db()
+    """Run before every request to ensure database is initialized."""
+    global db
+    if db is None:
+        initialize_db()
 
 
 # List of names to display with indices
