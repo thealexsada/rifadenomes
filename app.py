@@ -1,4 +1,5 @@
 import os
+import sqlite3  # Use sqlite3 to explicitly create the database file
 from cs50 import SQL
 from flask import Flask, redirect, request, jsonify, render_template
 
@@ -15,23 +16,25 @@ def initialize_db():
     # Ensure the directory exists
     os.makedirs("/app/tmp", exist_ok=True)
 
-    # Initialize or connect to the database
+    # Create the database file if it doesn't exist
     if not os.path.exists(db_path):
-        db = SQL(f"sqlite:///{db_path}")
-        db.execute("""
-            CREATE TABLE IF NOT EXISTS registrants (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                registrant TEXT NOT NULL,
-                name TEXT NOT NULL
-            );
-        """)
-    else:
-        db = SQL(f"sqlite:///{db_path}")
+        # Use sqlite3 to create the file explicitly
+        with sqlite3.connect(db_path) as conn:
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS registrants (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    registrant TEXT NOT NULL,
+                    name TEXT NOT NULL
+                );
+            """)
+    
+    # Connect to the database using cs50.SQL
+    db = SQL(f"sqlite:///{db_path}")
 
 
 @app.before_request
 def setup():
-    """Run before every request to ensure database is initialized."""
+    """Run before every request to ensure the database is initialized."""
     global db
     if db is None:
         initialize_db()
