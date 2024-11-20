@@ -81,6 +81,13 @@ def registrants():
     return render_template("registrants.html", registrants=registrants)
 
 
+@app.route("/admin/registrants", methods=["GET"])
+def view_registrants():
+    # Fetch all registrants
+    registrants = db.execute("SELECT * FROM registrants ORDER BY name ASC")
+    return jsonify(registrants)
+
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
