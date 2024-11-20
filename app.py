@@ -1,32 +1,32 @@
-# Implements a registration form, storing registrants in a SQLite database, with support for deregistration
 import os
 from cs50 import SQL
 from flask import Flask, redirect, request, jsonify, render_template
 
 app = Flask(__name__)
 
-
 # Path to the SQLite database
 db_path = "/app/tmp/rifadenomes.db"
 
-# Ensure the directory exists
-os.makedirs("/app/tmp", exist_ok=True)
 
-# Check if the database file exists after the volume is mounted
-if not os.path.exists(db_path):
-    # Initialize database structure
-    db = SQL(f"sqlite:///{db_path}")
-    db.execute("""
-        CREATE TABLE IF NOT EXISTS registrants (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            registrant TEXT NOT NULL,
-            name TEXT NOT NULL
-        );
-    """)
-else:
-    # Connect to the existing database
-    db = SQL(f"sqlite:///{db_path}")
+def get_db():
+    """Ensure the database is created and return the connection."""
+    # Ensure the directory exists
+    os.makedirs("/app/tmp", exist_ok=True)
 
+    # Create the database file if it doesn't exist
+    if not os.path.exists(db_path):
+        db = SQL(f"sqlite:///{db_path}")
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS registrants (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                registrant TEXT NOT NULL,
+                name TEXT NOT NULL
+            );
+        """)
+    else:
+        db = SQL(f"sqlite:///{db_path}")
+    
+    return db
 
 
 # List of names to display with indices
@@ -42,9 +42,9 @@ NAMES = [
     "Luana", "Larissa", "Paula", "Thaís", "Letícia", "Yasmim", "Débora", "Marília", "Diana"
 ]
 
-
 @app.route('/')
 def index():
+    db = get_db()
     # Fetch registered names
     registrants = db.execute("SELECT name FROM registrants")
     taken_names = {row["name"] for row in registrants}
@@ -55,7 +55,7 @@ def index():
 
 @app.route("/deregister", methods=["POST"])
 def deregister():
-
+    db = get_db()
     # Forget registrant
     id = request.form.get("id")
     if id:
@@ -65,6 +65,7 @@ def deregister():
 
 @app.route("/register", methods=["POST"])
 def register():
+    db = get_db()
     # Get form data
     registrant = request.form.get("registrant")
     names = request.form.get("names")
@@ -99,12 +100,14 @@ def register():
 
 @app.route("/registrants")
 def registrants():
+    db = get_db()
     registrants = db.execute("SELECT * FROM registrants ORDER BY name ASC")
     return render_template("registrants.html", registrants=registrants)
 
 
 @app.route("/admin/registrants", methods=["GET"])
 def view_registrants():
+    db = get_db()
     # Fetch all registrants
     registrants = db.execute("SELECT * FROM registrants ORDER BY name ASC")
     return jsonify(registrants)
