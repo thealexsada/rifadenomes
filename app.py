@@ -9,12 +9,13 @@ db_path = "/app/tmp/rifadenomes.db"
 
 
 def get_db():
-    """Ensure the database is created and return the connection."""
+    """Ensure the database exists and return the connection."""
     # Ensure the directory exists
     os.makedirs("/app/tmp", exist_ok=True)
 
-    # Create the database file if it doesn't exist
+    # Always check and create the database if it doesn't exist
     if not os.path.exists(db_path):
+        # Initialize database structure
         db = SQL(f"sqlite:///{db_path}")
         db.execute("""
             CREATE TABLE IF NOT EXISTS registrants (
@@ -23,10 +24,10 @@ def get_db():
                 name TEXT NOT NULL
             );
         """)
+        return db
     else:
-        db = SQL(f"sqlite:///{db_path}")
-    
-    return db
+        # Return the existing database connection
+        return SQL(f"sqlite:///{db_path}")
 
 
 # List of names to display with indices
@@ -41,6 +42,7 @@ NAMES = [
     "Lígia", "Melissa", "Valentina", "Alba", "Renata", "Clara", "Tereza", "Flávia", "Helena", "Lavínia", "Valéria",
     "Luana", "Larissa", "Paula", "Thaís", "Letícia", "Yasmim", "Débora", "Marília", "Diana"
 ]
+
 
 @app.route('/')
 def index():
