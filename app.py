@@ -6,11 +6,13 @@ from flask import Flask, redirect, request, jsonify, render_template
 app = Flask(__name__)
 
 
+# Path to the SQLite database
+db_path = "/app/tmp/rifadenomes.db"
+
 # Ensure the directory exists
 os.makedirs("/app/tmp", exist_ok=True)
 
-# Create the database file if it doesn't exist
-db_path = "/app/tmp/rifadenomes.db"
+# Check if the database file exists after the volume is mounted
 if not os.path.exists(db_path):
     # Initialize database structure
     db = SQL(f"sqlite:///{db_path}")
@@ -22,7 +24,9 @@ if not os.path.exists(db_path):
         );
     """)
 else:
+    # Connect to the existing database
     db = SQL(f"sqlite:///{db_path}")
+
 
 
 # List of names to display with indices
