@@ -5,7 +5,25 @@ from flask import Flask, redirect, request, jsonify, render_template
 
 app = Flask(__name__)
 
-db = SQL("sqlite:///app/tmp/rifadenomes.db") # Store the database in /tmp
+
+# Ensure the directory exists
+os.makedirs("/app/tmp", exist_ok=True)
+
+# Create the database file if it doesn't exist
+db_path = "/app/tmp/rifadenomes.db"
+if not os.path.exists(db_path):
+    # Initialize database structure
+    db = SQL(f"sqlite:///{db_path}")
+    db.execute("""
+        CREATE TABLE IF NOT EXISTS registrants (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            registrant TEXT NOT NULL,
+            name TEXT NOT NULL
+        );
+    """)
+else:
+    db = SQL(f"sqlite:///{db_path}")
+
 
 # List of names to display with indices
 NAMES = [
