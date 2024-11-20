@@ -5,7 +5,7 @@ from flask import Flask, redirect, request, jsonify, render_template
 
 app = Flask(__name__)
 
-db = SQL("sqlite:///tmp/rifadenomes.db") # Store the database in /tmp
+db = SQL("sqlite:///app/tmp/rifadenomes.db") # Store the database in /tmp
 
 # List of names to display with indices
 NAMES = [
