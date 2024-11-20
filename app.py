@@ -42,9 +42,9 @@ def setup():
 
 # List of names to display with indices
 NAMES = [
-    "Newton", "Isaque", "Euler", "Thales", "Leonardo", "Theo", "Heitor", "Thomas", "Edson", "Nicolas", "Willian",
+    "Newton", "Isaque", "Thales", "Leonardo", "Theo", "Heitor", "Thomas", "Edson", "Nicolas", "Willian",
     "Diogo", "Otto", "Cesar", "Joseph", "Hermes", "Juan", "Silas", "Henry", "Felipe", "Erick", "Richard", "Alberto",
-    "Antony", "Robert", "Estevam", "Jorge", "Mário", "Álvaro", "Augusto", "Kelvin", "Levi", "Murilo", "Sandro",
+    "Antony", "Euler", "Robert", "Estevam", "Jorge", "Mário", "Álvaro", "Augusto", "Kelvin", "Levi", "Murilo", "Sandro",
     "Ian", "Klaus", "Dante", "Otávio", "Hector", "Oliver", "Stephen", "Ivan", "Carlos", "Claudio", "Dylan", "Caleb",
     "Thiago", "Lorenzo", "Fabricio", "Matheus", "Beatriz", "Patrícia", "Berenice", "Olívia", "Érica", "Heloisa",
     "Luna", "Edna", "Nádia", "Cecília", "Vitória", "Camila", "Aurora", "Maia", "Sandra", "Miriam", "Raquel", "Laís",
