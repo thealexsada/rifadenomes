@@ -53,18 +53,6 @@ NAMES = [
     "Luana", "Larissa", "Paula", "Thaís", "Letícia", "Yasmim", "Débora", "Marília", "Diana"
 ]
 
-def restrict_admin_access():
-    """Restrict access to admin routes."""
-    auth = request.authorization
-    if request.path.startswith("/admin/") and (not auth or
-        auth.username != os.getenv("ADMIN_USERNAME") or
-        auth.password != os.getenv("ADMIN_PASSWORD")):
-        return Response(
-            "Access Denied: Please provide valid admin credentials.",
-            401,
-            {"WWW-Authenticate": 'Basic realm="Login Required"'}
-        )
-
 @app.route('/')
 def index():
     # Fetch registered names
