@@ -118,6 +118,18 @@ def view_registrants():
     registrants = db.execute("SELECT * FROM registrants ORDER BY name ASC")
     return jsonify(registrants)
 
+@app.route("/results")
+def results():
+    # Fetch all names
+    all_names = NAMES
+    
+    # Fetch registered names
+    registrants = db.execute("SELECT name FROM registrants")
+    registered_names = {row["name"] for row in registrants}
+
+    return render_template("results.html", all_names=all_names, registered_names=registered_names)
+
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
