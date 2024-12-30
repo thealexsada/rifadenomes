@@ -1,6 +1,6 @@
 # Rifa de Nomes
 
-#### Video Demo: [Insert Video URL Here]  
+#### Video Demo:[ Alex Sada's CS50x Final Project Demo - Rifa de Nomes ](https://youtu.be/C6YYP9Bi650)
 #### Description:  
 
 Rifa de Nomes is a Flask-based web application created as part of my CS50x final project. This project was inspired by the need for a virtual celebration to involve my family in Brazil in a special baby name reveal event for my baby boy, while I am based in New Zealand. The app enables friends and family to participate in a raffle by selecting names from a pre-defined list.  
