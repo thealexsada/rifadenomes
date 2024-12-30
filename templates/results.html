@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h1>Results</h1>
+<div id="result-names">
+    {% for name in all_names %}
+        <div 
+            class="name {% if name in registered_names %} {% if name == 'Euler' %}green{% else %}red{% endif %}{% endif %}"
+        >
+            {{ name }}
+        </div>
+    {% endfor %}
+</div>
+<a href="/" class="button">Back to Home</a>
+
+<style>
+    .name {
+        padding: 10px;
+        margin: 5px;
+        display: inline-block;
+        border: 1px solid black;
+        border-radius: 5px;
+    }
+    .red {
+        background-color: red;
+        color: white;
+    }
+    .green {
+        background-color: green;
+        color: white;
+    }
+</style>
+{% endblock %}
