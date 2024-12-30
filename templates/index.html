@@ -5,10 +5,7 @@
     <form action="/register" method="POST">
         <div id="nomes">
             {% for name in names %}
-                <div
-                    class="nome {% if name in taken_names %}desabilitado{% endif %}"
-                    data-name="{{ name }}"
-                >
+                <div class="nome {% if name in taken_names %}desabilitado{% endif %}" data-name="{{ name }}">
                     {{ name }}
                 </div>
             {% endfor %}

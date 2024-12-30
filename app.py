@@ -27,7 +27,7 @@ def initialize_db():
                     name TEXT NOT NULL
                 );
             """)
-    
+
     # Connect to the database using cs50.SQL
     db = SQL(f"sqlite:///{db_path}")
 
@@ -52,6 +52,7 @@ NAMES = [
     "Lígia", "Melissa", "Valentina", "Alba", "Renata", "Clara", "Tereza", "Flávia", "Helena", "Lavínia", "Valéria",
     "Luana", "Larissa", "Paula", "Thaís", "Letícia", "Yasmim", "Débora", "Marília", "Diana"
 ]
+
 
 @app.route('/')
 def index():
@@ -118,17 +119,17 @@ def view_registrants():
     registrants = db.execute("SELECT * FROM registrants ORDER BY name ASC")
     return jsonify(registrants)
 
+
 @app.route("/results")
 def results():
     # Fetch all names
     all_names = NAMES
-    
+
     # Fetch registered names
     registrants = db.execute("SELECT name FROM registrants")
     registered_names = {row["name"] for row in registrants}
 
     return render_template("results.html", all_names=all_names, registered_names=registered_names)
-
 
 
 if __name__ == "__main__":
